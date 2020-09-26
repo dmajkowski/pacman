@@ -20,8 +20,29 @@ class Pacman extends Component {
     this.pacmanRef.current.focus();
   }
 
-  handleKeyDown = (e) => {
+  handleKeyPress = (e) => {
     console.log(e.keyCode, e.key);
+
+    const currentTop = this.state.position.top;
+    const currentLeft = this.state.position.left;
+
+    if (e.key === "ArrowUp") {
+      this.setState({
+        direction: "up",
+      });
+    } else if (e.key === "ArrowRight") {
+      this.setState({
+        direction: "right",
+      });
+    } else if (e.key === "ArrowDown") {
+      this.setState({
+        direction: "down",
+      });
+    } else if (e.key === "ArrowLeft") {
+      this.setState({
+        direction: "left",
+      });
+    }
   };
 
   render() {
@@ -32,7 +53,7 @@ class Pacman extends Component {
         className={`pacman pacman-${direction}`}
         tabIndex="0"
         style={position}
-        onKeyDown={this.handleKeyDown}
+        onKeyDown={this.handleKeyPress}
       >
         <PacmanSvg />
       </div>
