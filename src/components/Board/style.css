@@ -2,4 +2,6 @@
   position: relative;
   background-color: #34495e;
   border: 10px #c0392b solid;
+  height: calc(100vh - 120px);
+  width: calc(100vw -20px);
 }
