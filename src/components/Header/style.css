@@ -1,6 +1,8 @@
 .header {
-  height: 100px;
-  background-color: black;
+  height: 50px; /* wykorzystywane do kalkulacji */
+  background-color: #000;
   color: #fff;
-  padding: 0px 10px 0px 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  text-align: center;
 }

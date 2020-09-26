@@ -4,7 +4,7 @@ import Header from "./components/Header/Header.js";
 import Board from "./components/Board";
 
 function App() {
-  const [score, setScore] = useState(2);
+  const [score, setScore] = useState(0);
   return (
     <div className="App">
       <Header score={score} />
