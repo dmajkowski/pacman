@@ -67,7 +67,13 @@ class Board extends Component {
       );
     }
     return (
-      <div className="board">
+      <div
+        style={{
+          width: window.innerWidth - 20 - ((window.innerWidth - 20) % 50),
+          height: window.innerHeight - 20 - ((window.innerHeight - 20) % 50),
+        }}
+        className="board"
+      >
         {foods}
         <Food />
         <Pacman ref={this.pacmanRef} />
