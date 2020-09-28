@@ -71,7 +71,7 @@ class Board extends Component {
         style={{
           width: window.innerWidth - 20 - ((window.innerWidth - 20) % 50),
           height: window.innerHeight - 20 - ((window.innerHeight - 20) % 50),
-        }}
+        }} //counting how big board should be,  size by multiplying 50
         className="board"
       >
         {foods}
