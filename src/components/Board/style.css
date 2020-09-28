@@ -1,5 +1,6 @@
 .board {
   position: relative;
+  margin: 0 auto;
   background-color: #34495e;
   border: 10px #c0392b solid;
 }

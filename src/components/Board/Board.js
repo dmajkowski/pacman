@@ -42,6 +42,10 @@ class Board extends Component {
 
   render() {
     const { foodSize, border, topScoreBoardHeight } = this.props;
+    //counting how big board should be,  size only by multiplying 50
+    const boardWidth = window.innerWidth - 20 - ((window.innerWidth - 20) % 50);
+    const boardHeight =
+      window.innerHeight - 70 - ((window.innerHeight - 20) % 50);
     let foods = [];
     let currentTop = 0;
     let currentLeft = 1 * foodSize;
@@ -66,12 +70,13 @@ class Board extends Component {
         />
       );
     }
+
     return (
       <div
         style={{
-          width: window.innerWidth - 20 - ((window.innerWidth - 20) % 50),
-          height: window.innerHeight - 20 - ((window.innerHeight - 20) % 50),
-        }} //counting how big board should be,  size by multiplying 50
+          width: boardWidth,
+          height: boardHeight,
+        }}
         className="board"
       >
         {foods}
