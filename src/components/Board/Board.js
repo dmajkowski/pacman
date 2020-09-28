@@ -5,71 +5,83 @@ import Ghost from "../Ghost";
 import Food from "../Food";
 
 class Board extends Component {
+  state = {
+    foodAmount: 0,
+  };
+
   constructor(props) {
     super(props);
 
     this.pacmanRef = React.createRef();
 
-    this.amountOfFood =
-      ((window.innerWidth - this.props.foodSize) *
-        (window.innerHeight - this.props.topScoreBoardHeight)) /
-        (this.props.foodSize * this.props.foodSize) -
-      1;
-
-    console.log(this.amountOfFood);
-    for (let i = 0; i < this.amountOfFood; i++) {
-      this["food" + i] = React.createRef();
+    this.food = [];
+    for (
+      let i = 0;
+      i < (window.innerHeight - 70 - ((window.innerHeight - 20) % 50)) / 50;
+      i++
+    ) {
+      for (
+        let j = 0;
+        j < (window.innerWidth - 20 - ((window.innerWidth - 20) % 50)) / 50;
+        j++
+      ) {
+        this.food.push({
+          key: `${i}${j}`,
+          position: { top: i * 50, left: j * 50 },
+          display: true,
+        });
+      }
     }
   }
 
-  lookForEat = () => {
+  eatFood = () => {
     const pacmanX = this.pacmanRef.current.state.position.left;
     const pacmanY = this.pacmanRef.current.state.position.top;
-    const pacmanSize = this.pacmanRef.current.props.size;
 
-    const pacmanLastX = pacmanX + pacmanSize / 2;
-    const pacmanLastY = pacmanY + pacmanSize / 2;
-
-    for (let i = 0; i <= this.amountOfFood; i++) {
-      const currentFood = this["food" + i].current;
-      if (currentFood) {
-        const currentFoodX = currentFood.state.position.left;
-        const currentFoodY = currentFood.state.position.top;
-        const currentFoodSize = currentFood.props.foodSize;
+    console.log(this.food);
+    for (let i = 0; i < this.food.length; i++) {
+      if (
+        this.food[i].position.top === pacmanY &&
+        this.food[i].position.left === pacmanX
+      ) {
+        // console.log(
+        //   `Zjadłem: ${this.food[i].position.top} : ${this.food[i].position.left}`
+        // );
+        this.food[i].display = false;
+        this.setState({ foodAmount: this.food });
       }
     }
   };
 
   render() {
-    const { foodSize, border, topScoreBoardHeight } = this.props;
+    // const { foodSize, border, topScoreBoardHeight } = this.props;
     //counting how big board should be,  size only by multiplying 50
     const boardWidth = window.innerWidth - 20 - ((window.innerWidth - 20) % 50);
     const boardHeight =
       window.innerHeight - 70 - ((window.innerHeight - 20) % 50);
-    let foods = [];
-    let currentTop = 0;
-    let currentLeft = 1 * foodSize;
-    for (let i = 0; i < this.amountOfFood; i++) {
-      if (currentLeft + foodSize >= window.innerWidth - border) {
-        currentTop += foodSize;
-        currentLeft = 0;
-      }
-      if (
-        currentTop + foodSize >=
-        window.innnerHeight - border - topScoreBoardHeight
-      ) {
-        break;
-      }
-      const position = { left: currentLeft, top: currentTop };
-      currentLeft += foodSize;
-      foods.push(
-        <Food
-          key={`food-emem-${i}`}
-          position={position}
-          ref={this["food" + i]}
-        />
-      );
-    }
+    // let currentTop = 0;
+    // let currentLeft = 1 * foodSize;
+    // for (let i = 0; i < this.amountOfFood; i++) {
+    //   if (currentLeft + foodSize >= window.innerWidth - border) {
+    //     currentTop += foodSize;
+    //     currentLeft = 0;
+    //   }
+    //   if (
+    //     currentTop + foodSize >=
+    //     window.innnerHeight - border - topScoreBoardHeight
+    //   ) {
+    //     break;
+    //   }
+    //   const position = { left: currentLeft, top: currentTop };
+    //   currentLeft += foodSize;
+    //   foods.push(
+    //     <Food
+    //       key={`food-emem-${i}`}
+    //       position={position}
+    //       ref={this["food" + i]}
+    //     />
+    //   );
+    // }
 
     return (
       <div
@@ -79,9 +91,17 @@ class Board extends Component {
         }}
         className="board"
       >
-        {foods}
-        <Food />
-        <Pacman ref={this.pacmanRef} />
+        {this.food.map((item) => {
+          return (
+            <Food
+              key={item.key}
+              position={{ top: item.position.top, left: item.position.left }}
+              display={item.display}
+            />
+          );
+        })}
+
+        <Pacman ref={this.pacmanRef} eatFood={this.eatFood} />
         <Ghost color="red" />
         <Ghost color="yellow" />
         <Ghost color="pink" />
@@ -90,10 +110,6 @@ class Board extends Component {
   }
 }
 
-Board.defaultProps = {
-  foodSize: 50,
-  border: 10 * 2,
-  topScoreBoardHeight: 50,
-};
+Board.defaultProps = {};
 
 export default Board;

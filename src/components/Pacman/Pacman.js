@@ -25,8 +25,7 @@ class Pacman extends Component {
 
     const currentTop = this.state.position.top;
     const currentLeft = this.state.position.left;
-    const { step, border, size, topScoreBoardHeight, borders } = this.props;
-    console.log(borders);
+    const { step } = this.props;
 
     if (e.key === "ArrowUp") {
       this.setState({
@@ -67,6 +66,8 @@ class Pacman extends Component {
         direction: "left",
       });
     }
+
+    this.props.eatFood();
   };
 
   render() {

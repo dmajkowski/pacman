@@ -7,13 +7,16 @@ class Food extends Component {
       top: this.props.position.top,
       left: this.props.position.left,
     },
-    hidden: false,
+    display: this.props.display,
   };
+
   render() {
-    const { position, hidden } = this.state;
-    console.log(`pozycja${position.top}`);
+    const { position } = this.state;
     return (
-      <div style={position} className={hidden ? "food hidden" : "food"}>
+      <div
+        style={position}
+        className={this.props.display ? "food" : "food hidden"}
+      >
         <div className="food-dot"></div>
       </div>
     );

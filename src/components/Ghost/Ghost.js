@@ -25,9 +25,7 @@ class Ghost extends Component {
     const arrayOfMovement = ["left", "up", "down", "right"];
     const movement = Math.floor(Math.random() * 4);
 
-    this.setState({ direction: arrayOfMovement[movement] }, () => {
-      console.log("movement:", this.state.direction);
-    });
+    this.setState({ direction: arrayOfMovement[movement] }, () => {});
   };
 
   move = () => {
