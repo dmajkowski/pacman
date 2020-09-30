@@ -21,11 +21,10 @@ class Pacman extends Component {
   }
 
   handleKeyPress = (e) => {
-    console.log(e.keyCode, e.key);
-
     const currentTop = this.state.position.top;
     const currentLeft = this.state.position.left;
     const { step } = this.props;
+    this.props.eatFood();
 
     if (e.key === "ArrowUp") {
       this.setState({
@@ -66,8 +65,6 @@ class Pacman extends Component {
         direction: "left",
       });
     }
-
-    this.props.eatFood();
   };
 
   render() {

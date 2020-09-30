@@ -6,15 +6,17 @@ import Food from "../Food";
 
 class Board extends Component {
   state = {
-    foodAmount: 0,
+    food: [],
   };
 
   constructor(props) {
     super(props);
 
     this.pacmanRef = React.createRef();
+  }
 
-    this.food = [];
+  componentDidMount() {
+    const food = [];
     for (
       let i = 0;
       i < (window.innerHeight - 70 - ((window.innerHeight - 20) % 50)) / 50;
@@ -25,63 +27,51 @@ class Board extends Component {
         j < (window.innerWidth - 20 - ((window.innerWidth - 20) % 50)) / 50;
         j++
       ) {
-        this.food.push({
+        food.push({
           key: `${i}${j}`,
           position: { top: i * 50, left: j * 50 },
           display: true,
         });
       }
     }
+    this.eatFood();
+    this.setState({ food });
+    this.props.setMaxScore(food.length);
   }
 
   eatFood = () => {
     const pacmanX = this.pacmanRef.current.state.position.left;
     const pacmanY = this.pacmanRef.current.state.position.top;
+    const pacmanLastX = pacmanX + 50 / 2;
+    const pacmanLastY = pacmanY + 50 / 2;
+    const { food } = this.state;
 
-    console.log(this.food);
-    for (let i = 0; i < this.food.length; i++) {
+    for (let i = 0; i < food.length; i++) {
       if (
-        this.food[i].position.top === pacmanY &&
-        this.food[i].position.left === pacmanX
+        food[i].position.top === pacmanY &&
+        food[i].position.left === pacmanX
+        //   ||
+        // (food[i].position.top === pacmanLastY &&
+        //   food[i].position.left === pacmanLastX)
       ) {
-        // console.log(
-        //   `Zjadłem: ${this.food[i].position.top} : ${this.food[i].position.left}`
-        // );
-        this.food[i].display = false;
-        this.setState({ foodAmount: this.food });
+        food[i].display = false;
+        this.setState({ food });
+        break;
       }
     }
+
+    this.props.setScore(
+      this.state.food.filter((item) => {
+        return item.display === false;
+      }).length
+    );
   };
 
   render() {
-    // const { foodSize, border, topScoreBoardHeight } = this.props;
     //counting how big board should be,  size only by multiplying 50
     const boardWidth = window.innerWidth - 20 - ((window.innerWidth - 20) % 50);
     const boardHeight =
       window.innerHeight - 70 - ((window.innerHeight - 20) % 50);
-    // let currentTop = 0;
-    // let currentLeft = 1 * foodSize;
-    // for (let i = 0; i < this.amountOfFood; i++) {
-    //   if (currentLeft + foodSize >= window.innerWidth - border) {
-    //     currentTop += foodSize;
-    //     currentLeft = 0;
-    //   }
-    //   if (
-    //     currentTop + foodSize >=
-    //     window.innnerHeight - border - topScoreBoardHeight
-    //   ) {
-    //     break;
-    //   }
-    //   const position = { left: currentLeft, top: currentTop };
-    //   currentLeft += foodSize;
-    //   foods.push(
-    //     <Food
-    //       key={`food-emem-${i}`}
-    //       position={position}
-    //       ref={this["food" + i]}
-    //     />
-    //   );
-    // }
 
     return (
       <div
@@ -91,7 +81,7 @@ class Board extends Component {
         }}
         className="board"
       >
-        {this.food.map((item) => {
+        {this.state.food.map((item) => {
           return (
             <Food
               key={item.key}

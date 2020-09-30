@@ -5,10 +5,16 @@ import Board from "./components/Board";
 
 function App() {
   const [score, setScore] = useState(0);
+  const [maxScore, setMaxScore] = useState(1000000);
+
   return (
     <div className="App">
       <Header score={score} />
-      <Board setScore={setScore} />
+      {maxScore > score ? (
+        <Board setScore={setScore} setMaxScore={setMaxScore} />
+      ) : (
+        `Gratulacje! WYGRAŁEŚ!`
+      )}
     </div>
   );
 }
